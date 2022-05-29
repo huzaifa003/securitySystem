@@ -11,6 +11,11 @@ public class ClueDatabase extends Database{
 
     public void showCluesOnScreen(String tableName, TextArea textArea) throws SQLException {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName);
+        if (tableName.equalsIgnoreCase("crime_scene_reports"))
+        {
+            resultSet = statement.executeQuery("SELECT * FROM " + tableName + " ORDER BY status DESC");
+        }
+
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
         int noOfColumns = resultSetMetaData.getColumnCount();
 

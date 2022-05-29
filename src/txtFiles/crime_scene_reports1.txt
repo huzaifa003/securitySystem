@@ -2,5 +2,5 @@ _____________________________________________________
 [ crime_scene_reports ]
 | id || description |
 ----------------------------------------------------
-| 303 || Vandalism took place at around 11, Two witnesses Known |
+| 303 || Vandalism took place at Fifer Street around 11, Four witnesses Known |
 _____________________________________________________

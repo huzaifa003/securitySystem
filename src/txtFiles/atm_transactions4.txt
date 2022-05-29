@@ -2,13 +2,5 @@ _____________________________________________________
 [ atm_transactions ]
 | account_number || atm_location |
 ----------------------------------------------------
-| 28500762 || Leggett Street |
-| 28296815 || Leggett Street |
-| 76054385 || Leggett Street |
-| 49610011 || Leggett Street |
-| 16153065 || Leggett Street |
-| 86363979 || Leggett Street |
-| 25506511 || Leggett Street |
-| 81061156 || Leggett Street |
-| 26013199 || Leggett Street |
+| 65725714 || Carvalho Road |
 _____________________________________________________

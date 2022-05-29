@@ -407,6 +407,13 @@ public class CrossReferenceDatabase extends Database{
                             "    WHERE year  = " + year  + " AND month  = " + month + " AND day = " + day  + " AND hour =  " + hour  + " AND minute >=  " + startingMinutes  + " AND minute <= " + endingMinutes  + "  AND activity = \"" + activity  + "\"\n" +
                             ")");
             this.printOnScreen(set2,textArea);
+
+            if (month == 7){
+                statement.executeUpdate("UPDATE crime_scene_reports SET status = 'SOLVED' WHERE description like '%CS50 duck%'");
+            }
+            else if (month == 8){
+                statement.executeUpdate("UPDATE crime_scene_reports SET status = 'SOLVED' WHERE description like 'Vandalism took place at Fifer Street around 11, Four witnesses Known'");
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
