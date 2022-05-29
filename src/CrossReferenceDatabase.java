@@ -5,6 +5,21 @@ import java.sql.SQLException;
 
 public class CrossReferenceDatabase extends Database{
     TextArea textArea;
+    int year;
+    int month;
+    int day;
+    String street;
+    
+    int hour;
+    int startingMinutes;
+    int endingMinutes;
+    String activity;
+
+    String atm_street;
+    String city;
+    
+    String duration;
+
     public CrossReferenceDatabase(TextArea textArea) throws SQLException {
         this.textArea = textArea;
     }
@@ -13,7 +28,6 @@ public class CrossReferenceDatabase extends Database{
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
         int noOfColumns = resultSetMetaData.getColumnCount();
 
-        textArea.setText("_______________________________________________________\n");
         textArea.append("[ "+resultSetMetaData.getTableName(1) + " ]\n");
         for (int i = 1; i <= noOfColumns; i++) {
             textArea.append("| " + resultSetMetaData.getColumnName(i) + " |");
@@ -32,10 +46,17 @@ public class CrossReferenceDatabase extends Database{
     public void getCrimeSceneReport(int month, int day, int year, String street) {
 
         try {
-            ResultSet set = statement.executeQuery("SELECT id,description FROM crime_scene_reports WHERE month = 7 AND day = 28 AND year  = 2021 AND street = 'Humphrey Street'");
+            this.month=month;
+            this.year=year;
+            this.day=day;
+            this.street=street;
+
+            ResultSet set = statement.executeQuery("SELECT id,description FROM crime_scene_reports WHERE month = " + month + " AND day = " + day  + " AND year  = " + year  + " AND street =  '" + street  + "'");
+            System.out.println(month);
+            System.out.println("SELECT id,description FROM crime_scene_reports WHERE month = " + month + " AND day = " + day  + " AND year  = " + year  + " AND street =  '" + street  + "'");
             WriteFile.writeData(set);
 
-            ResultSet set2 = statement.executeQuery("SELECT id,description FROM crime_scene_reports WHERE month = 7 AND day = 28 AND year  = 2021 AND street = 'Humphrey Street'");
+            ResultSet set2 = statement.executeQuery("SELECT id,description FROM crime_scene_reports WHERE month = " + month + " AND day = " + day  + " AND year  = " + year  + " AND street =  '" + street  + "'");
             textArea.setText("HELLO");
             this.printOnScreen(set2,textArea);
         } catch (SQLException throwables) {
@@ -44,12 +65,12 @@ public class CrossReferenceDatabase extends Database{
 
     }
 
-    public void getTranscripts(int month, int day, int year) throws SQLException {
+    public void getTranscripts() throws SQLException {
         try {
-            ResultSet set = statement.executeQuery("SELECT name,transcript from interviews WHERE month = 7 AND day = 28 AND year  = 2021");
+            ResultSet set = statement.executeQuery("SELECT name,transcript from interviews WHERE month = " + month + " AND day = " + day  + " AND year  = " + year  + "");
             WriteFile.writeData(set);
 
-            ResultSet set2 = statement.executeQuery("SELECT name,transcript from interviews WHERE month = 7 AND day = 28 AND year  = 2021");
+            ResultSet set2 = statement.executeQuery("SELECT name,transcript from interviews WHERE month = " + month + " AND day = " + day  + " AND year  = " + year  + "");
             this.printOnScreen(set2,textArea);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -57,14 +78,21 @@ public class CrossReferenceDatabase extends Database{
 //
     }
 
-    public void getLicensePlate(){
+    public void getLicensePlate(int hour, int startingMinutes, int endingMinutes, String activity){
         try {
+            this.hour = hour;
+            this.startingMinutes = startingMinutes;
+            this.endingMinutes = endingMinutes;
+            this.activity = activity;
+            
             ResultSet set = statement.executeQuery("SELECT license_plate FROM bakery_security_logs\n" +
-                    "WHERE year  = 2021 AND month  = 7 AND day = 28 AND hour = 10 AND minute >= 15 AND minute <=25  AND activity = \"exit\"");
+                    "WHERE year  = " + year  + " AND month  = " + month + " AND day = " + day  + " AND hour =  " + hour  + " AND minute >=  " + startingMinutes  + " AND minute <= " + endingMinutes  + "  AND activity = \"" + activity  + "\" ");
+
+            System.out.println("SELECT license_plate FROM bakery_security_logs\n" +                   "WHERE year  = " + year  + " AND month  = " + month + " AND day = " + day  + " AND hour =  " + hour  + " AND minute >=  " + startingMinutes  + " AND minute <= " + endingMinutes  + "  AND activity = \""+ activity  + "\" ");
             WriteFile.writeData(set);
 
             ResultSet set2 = statement.executeQuery("SELECT license_plate FROM bakery_security_logs\n" +
-                    "WHERE year  = 2021 AND month  = 7 AND day = 28 AND hour = 10 AND minute >= 15 AND minute <=25  AND activity = \"exit\"");
+                    "WHERE year  = " + year  + " AND month  = " + month + " AND day = " + day  + " AND hour =  " + hour  + " AND minute >=  " + startingMinutes  + " AND minute <= " + endingMinutes  + "  AND activity = \"" + activity  + "\"");
             this.printOnScreen(set2,textArea);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -72,14 +100,15 @@ public class CrossReferenceDatabase extends Database{
     }
 
 
-    public void getAtmLocation(){
+    public void getAtmLocation(String atm_street){
         try {
+            this.atm_street = atm_street;
             ResultSet set = statement.executeQuery("SELECT account_number, atm_location FROM atm_transactions\n" +
-                    "WHERE month  = 7 AND day  = 28 AND atm_location = \"Leggett Street\"");
+                    "WHERE month  = " + month + " AND day  = " + day  + " AND atm_location = \"" + atm_street  + "\"");
             WriteFile.writeData(set);
 
             ResultSet set2 = statement.executeQuery("SELECT account_number, atm_location FROM atm_transactions\n" +
-                    "WHERE month  = 7 AND day  = 28 AND atm_location = \"Leggett Street\"");
+                    "WHERE month  = " + month + " AND day  = " + day  + " AND atm_location = \"" + atm_street  + "\"");
             this.printOnScreen(set2,textArea);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -91,30 +120,30 @@ public class CrossReferenceDatabase extends Database{
             ResultSet set = statement.executeQuery("SELECT bank_accounts.account_number,person_id, creation_year FROM bank_accounts\n" +
                     "WHERE  account_number in (\n" +
                     "SELECT account_number FROM atm_transactions\n" +
-                    "WHERE month  = 7 AND day  = 28 AND atm_location = \"Leggett Street\"\n" +
+                    "WHERE month  = " + month + " AND day  = " + day  + " AND atm_location = \"" + atm_street  + "\"\n" +
                     ")\n");
             WriteFile.writeData(set);
 
             ResultSet set2 = statement.executeQuery("SELECT bank_accounts.account_number,person_id, creation_year FROM bank_accounts\n" +
                     "WHERE  account_number in (\n" +
                     "SELECT account_number FROM atm_transactions\n" +
-                    "WHERE month  = 7 AND day  = 28 AND atm_location = \"Leggett Street\"\n" +
+                    "WHERE month  = " + month + " AND day  = " + day  + " AND atm_location = \"" + atm_street  + "\"\n" +
                     ")\n");
-            textArea.setText("");
             this.printOnScreen(set2,textArea);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public void getAirport(){
+    public void getAirport(String city){
         try {
+            this.city=city;
             ResultSet set = statement.executeQuery("SELECT id, full_name, city FROM airports\n" +
-                    "WHERE city = \"Fiftyville\"");
+                    "WHERE city = \""+ city +"\"");
             WriteFile.writeData(set);
 
             ResultSet set2 = statement.executeQuery("SELECT id, full_name, city name FROM airports\n" +
-                    "WHERE city = \"Fiftyville\"");
+                    "WHERE city = \""+ city +"\"");
             this.printOnScreen(set2,textArea);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -127,8 +156,8 @@ public class CrossReferenceDatabase extends Database{
                     "FROM flights\n" +
                     "WHERE origin_airport_id = (\n" +
                     "SELECT id FROM airports\n" +
-                    "WHERE city = \"Fiftyville\")\n" +
-                    "AND year = 2021 AND day = 29 AND month = 7\n" +
+                    "WHERE city = \""+ city +"\")\n" +
+                    "AND year = " + year  + " AND day = 29 AND month = " + month + "\n" +
                     "ORDER BY hour,minute\n" +
                     "LIMIT 1");
             WriteFile.writeData(set);
@@ -137,8 +166,8 @@ public class CrossReferenceDatabase extends Database{
                     "FROM flights\n" +
                     "WHERE origin_airport_id = (\n" +
                     "SELECT id FROM airports\n" +
-                    "WHERE city = \"Fiftyville\")\n" +
-                    "AND year = 2021 AND day = 29 AND month = 7\n" +
+                    "WHERE city = \""+ city +"\")\n" +
+                    "AND year = " + year  + " AND day = 29 AND month = " + month + "\n" +
                     "ORDER BY hour,minute\n" +
                     "LIMIT 1");
             this.printOnScreen(set2,textArea);
@@ -157,8 +186,8 @@ public class CrossReferenceDatabase extends Database{
                     "    FROM flights\n" +
                     "    WHERE flights.origin_airport_id = (\n" +
                     "    SELECT airports.id FROM airports\n" +
-                    "    WHERE airports.city = \"Fiftyville\")\n" +
-                    "    AND flights.year = 2021 AND flights.day = 29 AND flights.month = 7\n" +
+                    "    WHERE airports.city = \""+ city +"\")\n" +
+                    "    AND flights.year = " + year  + " AND flights.day = 29 AND flights.month = " + month + "\n" +
                     "    ORDER BY flights.hour,flights.minute\n" +
                     "    LIMIT 1\n" +
                     ")");
@@ -171,8 +200,8 @@ public class CrossReferenceDatabase extends Database{
                     "    FROM flights\n" +
                     "    WHERE flights.origin_airport_id = (\n" +
                     "    SELECT airports.id FROM airports\n" +
-                    "    WHERE airports.city = \"Fiftyville\")\n" +
-                    "    AND flights.year = 2021 AND flights.day = 29 AND flights.month = 7\n" +
+                    "    WHERE airports.city = \""+ city +"\")\n" +
+                    "    AND flights.year = " + year  + " AND flights.day = 29 AND flights.month = " + month + "\n" +
                     "    ORDER BY flights.hour,flights.minute\n" +
                     "    LIMIT 1\n" +
                     ")");
@@ -188,7 +217,7 @@ public class CrossReferenceDatabase extends Database{
                     "WHERE  bank_accounts.account_number in\n" +
                     "(\n" +
                     "    SELECT atm_transactions.account_number FROM atm_transactions\n" +
-                    "    WHERE month  = 7 AND day  = 28 AND atm_location = \"Leggett Street\"\n" +
+                    "    WHERE month  = " + month + " AND day  = " + day  + " AND atm_location = \" " + atm_street  + "\"\n" +
                     ")\n");
             WriteFile.writeData(set);
 
@@ -196,7 +225,7 @@ public class CrossReferenceDatabase extends Database{
                     "WHERE  bank_accounts.account_number in\n" +
                     "(\n" +
                     "    SELECT atm_transactions.account_number FROM atm_transactions\n" +
-                    "    WHERE month  = 7 AND day  = 28 AND atm_location = \"Leggett Street\"\n" +
+                    "    WHERE month  = " + month + " AND day  = " + day  + " AND atm_location = \" " + atm_street  + "\"\n" +
                     ")\n");
             this.printOnScreen(set2,textArea);
         } catch (SQLException throwables) {
@@ -204,14 +233,15 @@ public class CrossReferenceDatabase extends Database{
         }
     }
 
-    public void getCallerId(){
+    public void getCallerId(String duration){
         try {
+            this.duration = duration;
             ResultSet set = statement.executeQuery("SELECT caller FROM phone_calls\n" +
-                    "WHERE month  = 7 AND day  = 28 AND duration < 60");
+                    "WHERE month  = " + month + " AND day  = " + day  + " AND duration "+ duration +"");
             WriteFile.writeData(set);
 
             ResultSet set2 = statement.executeQuery("SELECT caller FROM phone_calls\n" +
-                    "WHERE month  = 7 AND day  = 28 AND duration < 60");
+                    "WHERE month  = " + month + " AND day  = " + day  + " AND duration "+ duration +"");
             this.printOnScreen(set2,textArea);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -228,7 +258,7 @@ public class CrossReferenceDatabase extends Database{
                     "        WHERE  bank_accounts.account_number in\n" +
                     "        (\n" +
                     "            SELECT atm_transactions.account_number FROM atm_transactions\n" +
-                    "            WHERE month  = 7 AND day  = 28 AND atm_location = \"Leggett Street\"\n" +
+                    "            WHERE month  = " + month + " AND day  = " + day  + " AND atm_location = \" "+ atm_street  + "\"\n" +
                     "        )\n" +
                     ")\n" +
                     "\n" +
@@ -239,7 +269,7 @@ public class CrossReferenceDatabase extends Database{
                     "phone_number IN\n" +
                     "(\n" +
                     "    SELECT caller FROM phone_calls\n" +
-                    "    WHERE month  = 7 AND day  = 28 AND duration < 60\n" +
+                    "    WHERE month  = " + month + " AND day  = " + day  + " AND duration "+ duration +"\n" +
                     ")\n" +
                     "\n" +
                     "INTERSECT\n" +
@@ -255,8 +285,8 @@ public class CrossReferenceDatabase extends Database{
                     "            FROM flights\n" +
                     "            WHERE flights.origin_airport_id = (\n" +
                     "            SELECT airports.id FROM airports\n" +
-                    "            WHERE airports.city = \"Fiftyville\")\n" +
-                    "            AND flights.year = 2021 AND flights.day = 29 AND flights.month = 7\n" +
+                    "            WHERE airports.city = \""+ city +"\")\n" +
+                    "            AND flights.year = " + year  + " AND flights.day = 29 AND flights.month = "+ month + "\n" +
                     "            ORDER BY flights.hour,flights.minute\n" +
                     "            LIMIT 1\n" +
                     "        )\n" +
@@ -269,7 +299,7 @@ public class CrossReferenceDatabase extends Database{
                     "license_plate IN\n" +
                     "(\n" +
                     "    SELECT license_plate FROM bakery_security_logs\n" +
-                    "    WHERE year  = 2021 AND month  = 7 AND day = 28 AND hour = 10 AND minute >= 15 AND minute <=25  AND activity = \"exit\"\n" +
+                    "    WHERE year  = " + year  + " AND month  = " + month + " AND day = " + day  + " AND hour =  " + hour  + " AND minute >=  " + startingMinutes  + " AND minute <= " + endingMinutes  + "  AND activity = \" "+ activity  + "\"\n" +
                     ")");
             WriteFile.writeData(set);
 
@@ -281,7 +311,7 @@ public class CrossReferenceDatabase extends Database{
                     "        WHERE  bank_accounts.account_number in\n" +
                     "        (\n" +
                     "            SELECT atm_transactions.account_number FROM atm_transactions\n" +
-                    "            WHERE month  = 7 AND day  = 28 AND atm_location = \"Leggett Street\"\n" +
+                    "            WHERE month  = " + month + " AND day  = " + day  + " AND atm_location = \""+ atm_street  + "\"\n" +
                     "        )\n" +
                     ")\n" +
                     "\n" +
@@ -292,7 +322,7 @@ public class CrossReferenceDatabase extends Database{
                     "phone_number IN\n" +
                     "(\n" +
                     "    SELECT caller FROM phone_calls\n" +
-                    "    WHERE month  = 7 AND day  = 28 AND duration < 60\n" +
+                    "    WHERE month  = " + month + " AND day  = " + day  + " AND duration "+ duration +"\n" +
                     ")\n" +
                     "\n" +
                     "INTERSECT\n" +
@@ -308,8 +338,8 @@ public class CrossReferenceDatabase extends Database{
                     "            FROM flights\n" +
                     "            WHERE flights.origin_airport_id = (\n" +
                     "            SELECT airports.id FROM airports\n" +
-                    "            WHERE airports.city = \"Fiftyville\")\n" +
-                    "            AND flights.year = 2021 AND flights.day = 29 AND flights.month = 7\n" +
+                    "            WHERE airports.city = \""+ city +"\")\n" +
+                    "            AND flights.year = " + year  + " AND flights.day = 29 AND flights.month = " + month + "\n" +
                     "            ORDER BY flights.hour,flights.minute\n" +
                     "            LIMIT 1\n" +
                     "        )\n" +
@@ -322,8 +352,60 @@ public class CrossReferenceDatabase extends Database{
                     "license_plate IN\n" +
                     "(\n" +
                     "    SELECT license_plate FROM bakery_security_logs\n" +
-                    "    WHERE year  = 2021 AND month  = 7 AND day = 28 AND hour = 10 AND minute >= 15 AND minute <=25  AND activity = \"exit\"\n" +
+                    "    WHERE year  = " + year  + " AND month  = " + month + " AND day = " + day  + " AND hour =  " + hour  + " AND minute >=  " + startingMinutes  + " AND minute <= " + endingMinutes  + "  AND activity = \"" + activity  + "\"\n" +
                     ")");
+
+            System.out.println("SELECT * FROM people\n" +
+                    "WHERE\n" +
+                            "id IN\n" +
+                            "(\n" +
+                            "    SELECT person_id FROM bank_accounts\n" +
+                            "        WHERE  bank_accounts.account_number in\n" +
+                            "        (\n" +
+                            "            SELECT atm_transactions.account_number FROM atm_transactions\n" +
+                            "            WHERE month  = " + month + " AND day  = " + day  + " AND atm_location = \""+ atm_street  + "\"\n" +
+                            "        )\n" +
+                            ")\n" +
+                            "\n" +
+                            "INTERSECT\n" +
+                            "\n" +
+                            "SELECT * FROM people\n" +
+                            "WHERE\n" +
+                            "phone_number IN\n" +
+                            "(\n" +
+                            "    SELECT caller FROM phone_calls\n" +
+                            "    WHERE month  = " + month + " AND day  = " + day  + " AND duration "+ duration +"\n" +
+                            ")\n" +
+                            "\n" +
+                            "INTERSECT\n" +
+                            "\n" +
+                            "SELECT * FROM people\n" +
+                            "WHERE\n" +
+                            "passport_number IN\n" +
+                            "(\n" +
+                            "    SELECT passport_number FROM passengers\n" +
+                            "    WHERE flight_id =\n" +
+                            "        (\n" +
+                            "            SELECT flights.id\n" +
+                            "            FROM flights\n" +
+                            "            WHERE flights.origin_airport_id = (\n" +
+                            "            SELECT airports.id FROM airports\n" +
+                            "            WHERE airports.city = \""+ city +"\")\n" +
+                            "            AND flights.year = " + year  + " AND flights.day = 29 AND flights.month = " + month + "\n" +
+                            "            ORDER BY flights.hour,flights.minute\n" +
+                            "            LIMIT 1\n" +
+                            "        )\n" +
+                            ")\n" +
+                            "\n" +
+                            "INTERSECT\n" +
+                            "\n" +
+                            "SELECT * FROM people\n" +
+                            "WHERE\n" +
+                            "license_plate IN\n" +
+                            "(\n" +
+                            "    SELECT license_plate FROM bakery_security_logs\n" +
+                            "    WHERE year  = " + year  + " AND month  = " + month + " AND day = " + day  + " AND hour =  " + hour  + " AND minute >=  " + startingMinutes  + " AND minute <= " + endingMinutes  + "  AND activity = \"" + activity  + "\"\n" +
+                            ")");
             this.printOnScreen(set2,textArea);
         } catch (SQLException throwables) {
             throwables.printStackTrace();

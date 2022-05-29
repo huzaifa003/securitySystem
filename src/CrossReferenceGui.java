@@ -41,7 +41,13 @@ public class CrossReferenceGui extends JFrame{
 		reportButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				crossReferenceDatabase.getCrimeSceneReport(27,1,2021,"Humphrey Street");
+				int month = Integer.parseInt(JOptionPane.showInputDialog("Enter the Month please"));
+				int day = Integer.parseInt(JOptionPane.showInputDialog("Enter the Day please"));
+				int year = Integer.parseInt(JOptionPane.showInputDialog("Enter the Year please"));
+				String street = (String) JOptionPane.showInputDialog("Enter the Street");
+
+				crossReferenceDatabase.getCrimeSceneReport(month,day,year,street); //28-7-2021 Humphrey Street
+
 				getInterviews.setEnabled(true);
 				progressBar.setValue(PROGRESS_CONSTANT);
 			}
@@ -54,7 +60,7 @@ public class CrossReferenceGui extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					crossReferenceDatabase.getTranscripts(1,1,27);
+					crossReferenceDatabase.getTranscripts();
 					licenseButton.setEnabled(true);
 					progressBar.setValue(PROGRESS_CONSTANT * 2);
 				} catch (SQLException throwables) {
@@ -69,7 +75,12 @@ public class CrossReferenceGui extends JFrame{
 		licenseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				crossReferenceDatabase.getLicensePlate();
+				int hour = Integer.parseInt(JOptionPane.showInputDialog("Enter the Hour please")); //10
+				int startingMinutes = Integer.parseInt(JOptionPane.showInputDialog("Enter the Starting minutes please")); //15
+				int endingMinutes = Integer.parseInt(JOptionPane.showInputDialog("Enter the Ending Minutes please")); //25
+				String activity = (String) JOptionPane.showInputDialog("Enter the Activity, exit or entrance"); //exit
+
+				crossReferenceDatabase.getLicensePlate(hour,startingMinutes,endingMinutes,activity);
 				transactionButton.setEnabled(true);
 				progressBar.setValue(PROGRESS_CONSTANT * 3);
 			}
@@ -82,7 +93,8 @@ public class CrossReferenceGui extends JFrame{
 		transactionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("HELLO");
-				crossReferenceDatabase.getAtmLocation();
+				String atm_street = (String) JOptionPane.showInputDialog("Enter the Atm Street "); //Leggett Street
+				crossReferenceDatabase.getAtmLocation(atm_street);
 				accountDetailsButton.setEnabled(true);
 				progressBar.setValue(PROGRESS_CONSTANT * 4);
 			}
@@ -117,7 +129,9 @@ public class CrossReferenceGui extends JFrame{
 		airportButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				crossReferenceDatabase.getAirport();
+				String city = (String) JOptionPane.showInputDialog("Enter the City "); //Fiftyville
+
+				crossReferenceDatabase.getAirport(city);
 				flightButton.setEnabled(true);
 				progressBar.setValue(PROGRESS_CONSTANT * 6);
 			}
@@ -169,7 +183,9 @@ public class CrossReferenceGui extends JFrame{
 		callButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				crossReferenceDatabase.getCallerId();
+				String duration = (String) JOptionPane.showInputDialog("Enter the Duration in format <,>,<=,>= number "); //< 60
+
+				crossReferenceDatabase.getCallerId(duration);
 				culpritButton.setEnabled(true);
 				progressBar.setValue(PROGRESS_CONSTANT * 9);
 			}

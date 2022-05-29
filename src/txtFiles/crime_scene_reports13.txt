@@ -1,5 +1,6 @@
 _____________________________________________________
-[ people ]
-| id || name || phone_number || passport_number || license_plate |
+[ crime_scene_reports ]
+| id || description |
 ----------------------------------------------------
+| 1 || Credit card fraud took place at 00:53. Two people witnessed the event. |
 _____________________________________________________

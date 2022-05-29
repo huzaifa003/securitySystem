@@ -1,5 +1,6 @@
 _____________________________________________________
-[ people ]
-| id || name || phone_number || passport_number || license_plate |
+[ interviews ]
+| name || transcript |
 ----------------------------------------------------
+| Melissa || “Then we have stopped all the holes. And now we must be silent and wait.” |
 _____________________________________________________
