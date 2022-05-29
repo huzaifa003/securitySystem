@@ -1,0 +1,17 @@
+DATE: 27-08-2021
+Street: Fifer Street
+License Plate: LGB6911
+Hour: 11
+Minuite Ending 5
+Activity: Entrance
+Airport : Fiftyville.
+Bank Account No : 65725714
+Person_id: 707842
+creation year: 2010
+Atm Location : Carvalho Road
+Flight Origin : 8, Flight Destination 11
+Passport No: 3400510353
+Seat 2C
+Caller : (123) 555-4444
+Reciever: (007) 555-2142
+Duration 94

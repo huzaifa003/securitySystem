@@ -1,5 +1,6 @@
 _____________________________________________________
-[ bakery_security_logs ]
-| license_plate |
+[ airports ]
+| id || full_name || city |
 ----------------------------------------------------
+| 8 || Fiftyville Regional Airport || Fiftyville |
 _____________________________________________________
