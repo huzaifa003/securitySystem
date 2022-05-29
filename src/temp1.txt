@@ -14,4 +14,4 @@ Passport No: 3400510353
 Seat 2C
 Caller : (123) 555-4444
 Reciever: (007) 555-2142
-Duration 94
+Duration 503

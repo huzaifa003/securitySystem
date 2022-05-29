@@ -1,0 +1,12 @@
+DATE: 28-07-2021
+Street: Humphrey Street
+Hour: 10
+Minute starting: 15
+Minuite Ending 25
+Activity: exit
+Airport : Fiftyville.
+
+Atm Location : Leggett Road
+Flight Origin : 8, Flight Destination 11
+
+Duration < 60
